@@ -85,7 +85,7 @@ export const Home = () => {
           <div className="lg:col-span-7 space-y-6">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/80 border border-cyan-500/40 text-cyan-400 text-xs font-mono">
               <MapPin className="w-3.5 h-3.5" />
-              TALLER EN NEUQUÉN CAPITAL • ENVÍOS A TODO EL PAÍS
+              TALLER EN BARILOCHE - PATAGONIA ARGENTINA • ENVÍOS A TODO EL PAÍS
             </div>
 
             <h1 className="text-4xl md:text-6xl font-extrabold text-white tracking-tight leading-tight uppercase">
@@ -96,7 +96,7 @@ export const Home = () => {
             </h1>
 
             <p className="text-slate-300 text-base md:text-lg leading-relaxed max-w-xl">
-              Desde figuras coleccionables y kits de torta personalizados, hasta mates térmicos y soportes para setup gamer. Fabricación aditiva artesanal con filamento de alta calidad en Neuquén.
+              Desde figuras coleccionables y kits de torta personalizados, hasta mates térmicos y soportes para setup gamer. Fabricación aditiva artesanal con filamento de alta calidad en Bariloche - Patagonia Argentina.
             </p>
 
             <div className="flex flex-wrap gap-4 pt-2">
@@ -230,7 +230,7 @@ export const Home = () => {
               Impresión y entrega
             </h3>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Fabricación en cama caliente, posprocesado artesanal de rebabas y retiro o envío seguro desde Neuquén Capital.
+              Fabricación en cama caliente, posprocesado artesanal de rebabas y retiro o envío seguro desde Bariloche - Patagonia Argentina.
             </p>
           </div>
         </div>
