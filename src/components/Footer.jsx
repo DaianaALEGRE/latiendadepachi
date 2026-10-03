@@ -73,7 +73,7 @@ export const Footer = () => {
             </div>
 
             <p className="text-xs text-slate-500">
-              Taller de impresión 3D & custom mods • Neuquén
+              Taller de impresión 3D & custom mods • Bariloche - Patagonia Argentina
             </p>
           </div>
         </div>
@@ -95,7 +95,7 @@ export const Footer = () => {
           </span>
 
           <a
-            href="https://wa.me/5492990000000?text=Hola%20Juan!%20Te%20escribo%20desde%20la%20web%20de%20La%20Tienda%20de%20Pachi"
+            href="https://wa.me/542944905560?text=Hola%20Juan!%20Te%20escribo%20desde%20la%20web%20de%20La%20Tienda%20de%20Pachi"
             target="_blank"
             rel="noreferrer"
             className="flex items-center gap-1.5 hover:text-cyan-400 transition"
@@ -110,7 +110,7 @@ export const Footer = () => {
 
           <span className="flex items-center gap-1 text-slate-500">
             <MapPin className="w-3.5 h-3.5 text-amber-400" />
-            Neuquén Capital, Argentina
+            Bariloche - Patagonia Argentina
           </span>
         </div>
 
@@ -145,7 +145,7 @@ export const Footer = () => {
       </div>
 
       <div className="max-w-6xl mx-auto mt-8 pt-6 border-t border-slate-900/80 text-center text-[11px] text-slate-600">
-        Piezas de alta precisión en PLA de primera calidad. Envíos y retiros coordinados en Neuquén.
+        Piezas de alta precisión en PLA de primera calidad. Envíos y retiros coordinados en Bariloche - Patagonia Argentina.
       </div>
     </footer>
   );

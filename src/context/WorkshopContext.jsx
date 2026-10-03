@@ -1,157 +1,257 @@
 import React, {
   createContext,
   useContext,
-  useState,
   useEffect,
-} from 'react';
+  useState,
+} from "react";
 
-import { supabase } from '../lib/supabase';
+import { supabase } from "../lib/supabase";
 
-const WorkshopContext = createContext();
+const WorkshopContext = createContext(null);
 
 export const WorkshopProvider = ({ children }) => {
-  // 1. Tarifa PLA por gramo
-  const [gramRate, setGramRate] = useState(() => {
-    return (
-      parseFloat(localStorage.getItem('pachi_gram_rate')) || 45.0
-    );
-  });
+  const [session, setSession] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
 
-  // 2. Precios base por unidad de merchandising corporativo (ARS)
-  const [corpPricing, setCorpPricing] = useState(() => {
-    const saved = localStorage.getItem('pachi_corp_pricing');
+  const [config, setConfig] = useState(null);
 
-    return saved
-      ? JSON.parse(saved)
-      : {
-          keychain: 1400, // Llaveros
-          desk: 3900, // Soportes
-          trophy: 7800, // Trofeos
-        };
-  });
+  const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
+  const [isLoadingRate, setIsLoadingRate] = useState(true);
 
-  // 3. Descuentos por volumen (% según cantidad: 50u, 100u, 150u+)
-  const [corpDiscounts, setCorpDiscounts] = useState(() => {
-    const saved = localStorage.getItem('pachi_corp_discounts');
+  // --------------------------------------------------
+  // SESIÓN DE SUPABASE AUTH
+  // --------------------------------------------------
 
-    return saved
-      ? JSON.parse(saved)
-      : {
-          tier1: 10, // A partir de 50 u. (10%)
-          tier2: 15, // A partir de 100 u. (15%)
-          tier3: 20, // A partir de 150 u. (20%)
-        };
-  });
-
-  const [isAdmin, setIsAdmin] = useState(() => {
-    return localStorage.getItem('pachi_is_admin') === 'true';
-  });
-
-  const [isAdminModalOpen, setIsAdminModalOpen] =
-    useState(false);
-
-  const [isLoadingRate, setIsLoadingRate] = useState(false);
-
-  // Cargar configuraciones guardadas
   useEffect(() => {
-    const fetchConfig = async () => {
-      if (!supabase) return;
+    let mounted = true;
 
-      try {
-        setIsLoadingRate(true);
+    const loadSession = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
 
-        const { data, error } = await supabase
-          .from('taller_config')
-          .select('clave, valor');
+      if (!mounted) return;
 
-        if (data && !error) {
-          data.forEach((item) => {
-            if (item.clave === 'precio_gramo') {
-              setGramRate(parseFloat(item.valor));
-            }
-
-            if (item.clave === 'corp_pricing') {
-              setCorpPricing(JSON.parse(item.valor));
-            }
-
-            if (item.clave === 'corp_discounts') {
-              setCorpDiscounts(JSON.parse(item.valor));
-            }
-          });
-        }
-      } catch (err) {
-        console.warn('Usando configuración local:', err);
-      } finally {
-        setIsLoadingRate(false);
-      }
+      setSession(session);
+      setIsAdmin(!!session);
     };
 
-    fetchConfig();
+    loadSession();
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(
+      (_event, newSession) => {
+        if (!mounted) return;
+
+        setSession(newSession);
+        setIsAdmin(!!newSession);
+      }
+    );
+
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
-  // Actualizar todo con validación de clave/PIN
+  // --------------------------------------------------
+  // CONFIGURACIÓN PRIVADA
+  // --------------------------------------------------
+
+  const loadConfig = async () => {
+    if (!session) {
+      setConfig(null);
+      setIsLoadingRate(false);
+      return;
+    }
+
+    try {
+      setIsLoadingRate(true);
+
+      const { data, error } = await supabase
+        .from("taller_config_privada")
+        .select(`
+          id,
+          costo_filamento_kg,
+          costo_kwh,
+          consumo_watts,
+          desgaste_maquina_hora,
+          costo_mano_obra_hora,
+          margen_multiplicador,
+          precio_minimo_venta
+        `)
+        .limit(1)
+        .maybeSingle();
+
+      if (error) {
+        console.error(
+          "Error cargando configuración privada:",
+          error
+        );
+
+        setConfig(null);
+        return;
+      }
+
+      setConfig(data);
+    } catch (error) {
+      console.error(
+        "Error inesperado cargando configuración:",
+        error
+      );
+
+      setConfig(null);
+    } finally {
+      setIsLoadingRate(false);
+    }
+  };
+
+  useEffect(() => {
+    if (session) {
+      loadConfig();
+    } else {
+      setConfig(null);
+      setIsLoadingRate(false);
+    }
+  }, [session]);
+
+  // --------------------------------------------------
+  // ACTUALIZAR CONFIGURACIÓN
+  // --------------------------------------------------
+
   const updateSettings = async ({
     newGramRate,
-    newCorpPricing,
-    newCorpDiscounts,
-    enteredPin,
+    newCostPerKwh,
+    newMachineWatts,
+    newMachineWear,
+    newLaborRate,
+    newMarginMultiplier,
+    newMinimumPrice,
   }) => {
-    // Validación de PIN
-    if (enteredPin !== '1984' && enteredPin !== 'pachi') {
+    if (!session) {
       return {
         success: false,
-        message: 'PIN incorrecto (el PIN por defecto es 1984)',
+        message: "No hay una sesión de administrador activa.",
       };
     }
 
+    if (!config?.id) {
+      return {
+        success: false,
+        message: "No se encontró la configuración del taller.",
+      };
+    }
+
+    const updates = {};
+
     if (newGramRate !== undefined) {
-      setGramRate(parseFloat(newGramRate));
-      localStorage.setItem('pachi_gram_rate', newGramRate);
+      updates.costo_filamento_kg =
+        Number(newGramRate) * 1000;
     }
 
-    if (newCorpPricing) {
-      setCorpPricing(newCorpPricing);
+    if (newCostPerKwh !== undefined) {
+      updates.costo_kwh = Number(newCostPerKwh);
+    }
 
-      localStorage.setItem(
-        'pachi_corp_pricing',
-        JSON.stringify(newCorpPricing)
+    if (newMachineWatts !== undefined) {
+      updates.consumo_watts = Number(newMachineWatts);
+    }
+
+    if (newMachineWear !== undefined) {
+      updates.desgaste_maquina_hora =
+        Number(newMachineWear);
+    }
+
+    if (newLaborRate !== undefined) {
+      updates.costo_mano_obra_hora =
+        Number(newLaborRate);
+    }
+
+    if (newMarginMultiplier !== undefined) {
+      updates.margen_multiplicador =
+        Number(newMarginMultiplier);
+    }
+
+    if (newMinimumPrice !== undefined) {
+      updates.precio_minimo_venta =
+        Number(newMinimumPrice);
+    }
+
+    const { data, error } = await supabase
+      .from("taller_config_privada")
+      .update(updates)
+      .eq("id", config.id)
+      .select()
+      .single();
+
+    if (error) {
+      console.error(
+        "Error actualizando configuración:",
+        error
       );
+
+      return {
+        success: false,
+        message: error.message,
+      };
     }
 
-    if (newCorpDiscounts) {
-      setCorpDiscounts(newCorpDiscounts);
-
-      localStorage.setItem(
-        'pachi_corp_discounts',
-        JSON.stringify(newCorpDiscounts)
-      );
-    }
-
-    setIsAdmin(true);
-    localStorage.setItem('pachi_is_admin', 'true');
+    setConfig(data);
 
     return {
       success: true,
+      message: "Configuración guardada correctamente.",
     };
   };
 
-  const logoutAdmin = () => {
-    setIsAdmin(false);
-    localStorage.removeItem('pachi_is_admin');
+  // --------------------------------------------------
+  // CERRAR SESIÓN
+  // --------------------------------------------------
+
+  const logoutAdmin = async () => {
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+      console.error(
+        "Error cerrando sesión:",
+        error
+      );
+    }
   };
+
+  // --------------------------------------------------
+  // VALORES COMPATIBLES CON EL RESTO DEL PROYECTO
+  // --------------------------------------------------
+
+  const gramRate = config
+    ? Number(config.costo_filamento_kg) / 1000
+    : 0;
 
   return (
     <WorkshopContext.Provider
       value={{
-        gramRate,
-        corpPricing,
-        corpDiscounts,
-        updateSettings,
+        session,
+
         isAdmin,
+
+        config,
+
+        gramRate,
+
+        corpPricing: {},
+        corpDiscounts: {},
+
+        updateSettings,
+
         logoutAdmin,
+
         isAdminModalOpen,
         setIsAdminModalOpen,
+
         isLoadingRate,
+
+        reloadConfig: loadConfig,
       }}
     >
       {children}
@@ -159,4 +259,14 @@ export const WorkshopProvider = ({ children }) => {
   );
 };
 
-export const useWorkshop = () => useContext(WorkshopContext);
+export const useWorkshop = () => {
+  const context = useContext(WorkshopContext);
+
+  if (!context) {
+    throw new Error(
+      "useWorkshop debe utilizarse dentro de WorkshopProvider"
+    );
+  }
+
+  return context;
+};

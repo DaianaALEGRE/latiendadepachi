@@ -86,7 +86,7 @@ export const ProductPlaceholder = ({
 
         {/* BOTÓN DIRECTO A WHATSAPP */}
         <a
-          href={`https://wa.me/5492990000000?text=${whatsappInquiryMessage}`}
+          href={`https://wa.me/542944905560?text=${whatsappInquiryMessage}`}
           target="_blank"
           rel="noreferrer"
           className="w-full py-2.5 rounded-xl bg-slate-900 border border-slate-700/80 hover:border-cyan-400 hover:bg-cyan-500 hover:text-slate-950 text-xs font-bold text-slate-200 transition-all duration-200 text-center block"
