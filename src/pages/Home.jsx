@@ -10,8 +10,8 @@ import {
 import { ProductPlaceholder } from '../components/ProductPlaceholder';
 
 import LiveShowCase from '../components/LiveShowCase'; // <-- Componente del Carrusel
-import PublicQuoteCalculator from "../components/PublicQuoteCalculator"
-export const Home = () => {
+
+export const Home = ({ onNavigate }) => {
   const featuredProducts = [
     {
       id: 'figuras-pop-tortas',
@@ -100,13 +100,14 @@ export const Home = () => {
             </p>
 
             <div className="flex flex-wrap gap-4 pt-2">
-              <a
-                href="#cotizador"
-                className="px-6 py-3.5 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-bold text-sm flex items-center gap-2 transition shadow-lg shadow-cyan-500/25"
-              >
-                <Zap className="w-4 h-4" />
-                Calcular Presupuesto
-              </a>
+            <button
+  type="button"
+  onClick={() => onNavigate("quote")}
+  className="px-6 py-3.5 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-bold text-sm flex items-center gap-2 transition shadow-lg shadow-cyan-500/25"
+>
+  <Zap className="w-4 h-4" />
+  Calcular Presupuesto
+</button>
 
               <a
                 href="https://wa.me/5492944905560?text=Hola%20Juan!%20Te%20contacto%20desde%20la%20web%20de%20La%20Tienda%20de%20Pachi%20para%20consultar%20por%20una%20impresi%C3%B3n%203D"
