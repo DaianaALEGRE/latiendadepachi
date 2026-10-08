@@ -156,7 +156,7 @@ export const PublicQuoteCalculator = () => {
       : "No se pudo obtener un estimado automático.";
 
   const whatsappMessage = encodeURIComponent(
-    `Hola Juan! Estuve usando el cotizador en la web de La Tienda de Pachi:\n\n` +
+    `Hola Pachi! Estuve usando el cotizador en la web de La Tienda de Pachi:\n\n` +
       `• Pieza: ${type.name}\n` +
       `• Tamaño: ${
         selectedSizeObj?.name || size
@@ -480,7 +480,7 @@ export const PublicQuoteCalculator = () => {
             className="w-full py-4 rounded-xl bg-[#25D366] hover:bg-emerald-400 text-slate-950 font-extrabold text-sm uppercase tracking-wider text-center flex items-center justify-center gap-2 mt-6 transition-all shadow-lg hover:shadow-[#25D366]/20"
           >
             <MessageCircle className="w-5 h-5 fill-current" />
-            Consultar y Confirmar con Juan
+            Consultar y Confirmar con Pachi
           </a>
         </div>
       </div>

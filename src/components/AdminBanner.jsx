@@ -23,7 +23,7 @@ export const AdminBanner = () => {
         <ShieldCheck className="w-4 h-4 text-cyan-400" />
 
         <span className="font-bold">
-          Modo Tallerista Juan Activo
+          Modo Tallerista Pachi Activo
         </span>
 
         <span className="text-slate-400">

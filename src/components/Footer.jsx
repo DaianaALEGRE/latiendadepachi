@@ -95,7 +95,7 @@ export const Footer = () => {
           </span>
 
           <a
-            href="https://wa.me/542944905560?text=Hola%20Juan!%20Te%20escribo%20desde%20la%20web%20de%20La%20Tienda%20de%20Pachi"
+            href="https://wa.me/542944905560?text=Hola%20Pachi!%20Te%20escribo%20desde%20la%20web%20de%20La%20Tienda%20de%20Pachi"
             target="_blank"
             rel="noreferrer"
             className="flex items-center gap-1.5 hover:text-cyan-400 transition"

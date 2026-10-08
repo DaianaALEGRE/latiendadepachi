@@ -17,7 +17,7 @@ export const ProductPlaceholder = ({
   const hasValidImage = Boolean(image && !imageError);
 
   const whatsappInquiryMessage = encodeURIComponent(
-    `¡Hola Juan! Vi este trabajo en tu web y me gustaría consultar por uno similar:\n` +
+    `¡Hola Pachi! Vi este trabajo en tu web y me gustaría consultar por uno similar:\n` +
       `• Producto: ${title} (${category})\n` +
       `¿Tenés disponibilidad o qué colores de filamento tenés en taller?`
   );
