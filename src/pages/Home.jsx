@@ -7,73 +7,18 @@ import {
   ArrowRight
 } from 'lucide-react';
 
-import { ProductPlaceholder } from '../components/ProductPlaceholder';
+// Se mantiene intacto tu carrusel del Hero
+import LiveShowCase from '../components/LiveShowCase';
 
-import LiveShowCase from '../components/LiveShowCase'; // <-- Componente del Carrusel
+// Se importa el nuevo componente de galería que creaste
+import GalleryShowcase from '../components/GalleryShowcase';
 
 export const Home = ({ onNavigate }) => {
-  const featuredProducts = [
-    {
-      id: 'figuras-pop-tortas',
-      title: 'Figuras Pop & Kits de Torta Personalizados',
-      category: '01 // Pop & Eventos',
-      badge: 'Bestseller',
-      description:
-        'Toppers para tortas de cumple, figuras Mini-Tú de personas y mascotas, y personajes de anime y videojuegos (Mario, Friends, Booba).',
-      image: '/img/catalogo/torta-carlitos.jpg', // o /productos/figura-anime.jpg
-    },
-    {
-      id: 'tradicion-vehiculos',
-      title: 'Mates Térmicos, Naipes & Vehículos a Escala',
-      category: '02 // Tradición & Juegos',
-      badge: 'Apto Alimentos',
-      description:
-        'Mates térmicos con vaso interior lavable, kits anotadores de Truco grabados y réplicas de camionetas y colectivos de turismo.',
-      image: '/img/catalogo/kit-truco.jpg', // o /productos/mate-termico.jpg
-    },
-    {
-      id: 'deco-setup-hardware',
-      title: 'Deco Hogar, Veladores & Setup Gamer',
-      category: '03 // Hogar & Setup',
-      badge: 'Diseño Propio',
-      description:
-        'Soportes anti-sag para placas de video GPU, veladores geométricos 3D, posavasos temáticos y jaboneras botánicas.',
-      image: '/img/catalogo/congas-deco.jpg', // o /productos/gpu-support.jpg
-    },
-    {
-      id: 'merch-llaveros',
-      title: 'Llaveros y Merchandising en Serie x Mayor',
-      category: '04 // Pymes & Merch',
-      badge: 'Lotes x Mayor',
-      description:
-        'Llaveros institucionales con packaging sellado para emprendimientos, medallas deportivas y nombres en relieve para útiles.',
-      image: '/img/catalogo/llaveros-aka.jpg', // o /productos/llavero-merch.jpg
-    },
-    {
-      id: 'mascotas-mini-tu',
-      title: 'Mascotas Esculpidas & Mini-Tú Custom',
-      category: '05 // Personalizado',
-      badge: '100% Exclusivo',
-      description:
-        'Modelado 3D a partir de tus fotos reales de perros, gatos y familiares para regalar un recuerdo inolvidable.',
-      image: '/img/catalogo/mascota-yorkshire.jpg',
-    },
-    {
-      id: 'repuestos-tecnicos',
-      title: 'Piezas Técnicas & Repuestos a Medida',
-      category: '06 // Técnico & Prototipos',
-      badge: 'Alta Resistencia',
-      description:
-        'Engranajes, trabas y adaptadores mecánicos impresos en filamento reforzado para piezas discontinuadas.',
-      image: '/img/catalogo/repuesto-tecnico.jpg',
-    },
-  ];
-
   return (
     <div className="space-y-24 pb-20">
 
       {/* =========================================================
-          HERO SECTION CON CARRUSEL SHOWCASE EN VIVO
+          HERO SECTION CON CARRUSEL SHOWCASE EN VIVO (INTACTO)
       ========================================================= */}
       <section className="relative rounded-3xl bg-gradient-to-b from-[#161622] to-[#0d0d16] border border-cyan-500/20 p-6 md:p-12 overflow-hidden shadow-2xl">
         <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -100,14 +45,14 @@ export const Home = ({ onNavigate }) => {
             </p>
 
             <div className="flex flex-wrap gap-4 pt-2">
-            <button
-  type="button"
-  onClick={() => onNavigate("quote")}
-  className="px-6 py-3.5 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-bold text-sm flex items-center gap-2 transition shadow-lg shadow-cyan-500/25"
->
-  <Zap className="w-4 h-4" />
-  Calcular Presupuesto
-</button>
+              <button
+                type="button"
+                onClick={() => onNavigate("quote")}
+                className="px-6 py-3.5 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-bold text-sm flex items-center gap-2 transition shadow-lg shadow-cyan-500/25"
+              >
+                <Zap className="w-4 h-4" />
+                Calcular Presupuesto
+              </button>
 
               <a
                 href="https://wa.me/5492944905560?text=Hola%20Juan!%20Te%20contacto%20desde%20la%20web%20de%20La%20Tienda%20de%20Pachi%20para%20consultar%20por%20una%20impresi%C3%B3n%203D"
@@ -141,49 +86,14 @@ export const Home = ({ onNavigate }) => {
 
 
       {/* =========================================================
-          CATÁLOGO DE PRODUCTOS / ESPECIALIDADES
+          NUEVA GALERÍA FOTOGRÁFICA INTERACTIVA DEL TALLER
+          (Reemplaza el array estático de placeholders)
       ========================================================= */}
-      <section className="space-y-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-          <div>
-            <div className="inline-flex items-center gap-2 text-cyan-400 text-xs font-mono uppercase tracking-wider mb-1">
-              <Zap className="w-3.5 h-3.5" />
-              Catálogo de Especialidades
-            </div>
-
-            <h2 className="text-2xl md:text-3xl font-extrabold text-white">
-              Trabajos del Taller & Modelos Populares
-            </h2>
-          </div>
-
-          <p className="text-xs text-slate-400 max-w-md font-mono">
-            Cada pieza se imprime con parámetros ajustados a su función: desde alta resistencia mecánica hasta acabado fino para colección.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {featuredProducts.map((product) => (
-            <ProductPlaceholder
-              key={product.id}
-              title={product.title}
-              category={product.category}
-              badge={product.badge}
-              description={product.description}
-              image={product.image}
-            />
-          ))}
-        </div>
-      </section>
+      <GalleryShowcase />
 
 
       {/* =========================================================
-          COTIZADOR SEGURO E INTELIGENTE
-      ========================================================= */}
-     
-
-
-      {/* =========================================================
-          CÓMO ENCARGAR
+          CÓMO ENCARGAR (INTACTO)
       ========================================================= */}
       <section className="bg-[#13131b] border border-slate-800 rounded-3xl p-8 md:p-12 space-y-8">
         <div className="text-center max-w-xl mx-auto space-y-2">
