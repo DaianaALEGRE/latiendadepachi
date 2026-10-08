@@ -55,7 +55,7 @@ export const Home = ({ onNavigate }) => {
               </button>
 
               <a
-                href="https://wa.me/5492944905560?text=Hola%20Juan!%20Te%20contacto%20desde%20la%20web%20de%20La%20Tienda%20de%20Pachi%20para%20consultar%20por%20una%20impresi%C3%B3n%203D"
+                href="https://wa.me/5492944905560?text=Hola%20Pachi!%20Te%20contacto%20desde%20la%20web%20de%20La%20Tienda%20de%20Pachi%20para%20consultar%20por%20una%20impresi%C3%B3n%203D"
                 target="_blank"
                 rel="noreferrer"
                 className="px-6 py-3.5 rounded-xl bg-[#1b1b26] hover:bg-[#232332] text-slate-300 hover:text-white border border-slate-700 font-bold text-sm flex items-center gap-2 transition"
