@@ -65,7 +65,7 @@ export const Home = ({ onNavigate }) => {
               </a>
 
               <a
-                href="https://instagram.com/la.tienda.de_pachi"
+                href="https://instagram.com/la.tienda.de.pachi"
                 target="_blank"
                 rel="noreferrer"
                 className="px-6 py-3.5 rounded-xl bg-[#1b1b26] hover:bg-[#232332] text-slate-300 hover:text-white border border-slate-700 font-bold text-sm flex items-center gap-2 transition"
