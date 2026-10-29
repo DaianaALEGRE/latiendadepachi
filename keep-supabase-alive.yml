@@ -1,0 +1,22 @@
+
+name: Keep Supabase alive
+
+on:
+  schedule:
+    # Lunes y jueves a las 12:00 UTC (09:00 Argentina)
+    - cron: "0 12 * * 1,4"
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Consulta de lectura a taller_config
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          curl --fail --silent --show-error --output /dev/null \
+            "${SUPABASE_URL}/rest/v1/taller_config?select=*&limit=1" \
+            -H "apikey: ${SUPABASE_ANON_KEY}" \
+            -H "Authorization: Bearer ${SUPABASE_ANON_KEY}"
